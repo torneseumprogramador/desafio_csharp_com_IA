@@ -1,0 +1,85 @@
+#####################
+# LOGS (geral / .NET)
+#####################
+*.log
+logs/
+Log/
+Logs/
+**/logs/
+**/Log/
+**/Logs/
+
+#####################
+# WINDOWS
+#####################
+# Arquivos de log e sistema
+Thumbs.db
+Thumbs.db:encryptable
+Desktop.ini
+$RECYCLE.BIN/
+ehthumbs.db
+ehthumbs_vista.db
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+#####################
+# macOS
+#####################
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Logs e cache
+*.pid
+*.seed
+*.out
+*.err
+*.trace
+*.dmp
+
+# Diretórios de sistema
+.Spotlight-V100
+.Trashes
+.Trash-*
+
+#####################
+# LINUX / UNIX
+#####################
+*~
+*.swp
+*.swo
+.cache/
+.config/
+.local/
+.nfs*
+
+#####################
+# .NET / C#
+#####################
+bin/
+obj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]og/
+[Ll]ogs/
+*.svclog
+
+# VS / Rider
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.idea/
+
+# Testes / cobertura
+TestResults/
+*.coverage
+*.coveragexml
+
+# Configs locais (podem conter logs ou segredos)
+appsettings.*.local.json
