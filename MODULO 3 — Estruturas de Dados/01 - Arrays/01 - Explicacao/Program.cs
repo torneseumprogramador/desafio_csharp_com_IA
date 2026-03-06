@@ -12,7 +12,10 @@ Console.WriteLine(numeros[3]);
 Console.WriteLine(numeros[4]);
 Console.WriteLine("--------------------------------");
 
-
+Console.WriteLine("---------------Media de notas-----------------");
+double[] notas = { 10, 20, 30, 40, 50 };
+double media = notas.Average();
+Console.WriteLine($"Média: {media}");
 
 int[] numeros2 = { 10, 20, 30, 40, 50 };
 
