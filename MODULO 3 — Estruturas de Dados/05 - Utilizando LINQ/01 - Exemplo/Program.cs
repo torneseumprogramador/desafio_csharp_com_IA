@@ -13,9 +13,8 @@ var resultado = numeros
 
 foreach (var n in resultado)
 {
-    Console.WriteLine($"O valor de n é: {n}");
+    Console.WriteLine($"[Métodos Encadeados] O valor de n é: {n}");
 }
-
 
 // select * from numeros where n > 10 and n < 20 order by n asc select n * 2
 //  Sintaxe alternativa (Query Syntax)
@@ -27,9 +26,8 @@ var resultado2 = from n in numeros
 
 foreach (var n in resultado2)
 {
-    Console.WriteLine($"O valor de n é: {n}");
+    Console.WriteLine($"[Query Syntax] O valor de n é: {n}");
 }
-
 
 Console.WriteLine("---------------Exemplo de lista de pais, filhos e idades-----------------");
 
@@ -80,16 +78,13 @@ Console.WriteLine("---------------Exemplo de soma de idades dos pais------------
 var idadeDosPaisSomados = pais.Select(p => p.Idade).Sum();
 Console.WriteLine($"A idade total dos pais é: {idadeDosPaisSomados}");
 
-
 Console.WriteLine("---------------Exemplo de soma de idades dos pais like sql-----------------");
 var idadeDosPaisSomadosSQL = (from p in pais select p.Idade).Sum();
 Console.WriteLine($"A idade total dos pais é: {idadeDosPaisSomadosSQL}");
 
-
 Console.WriteLine("---------------Exemplo de soma de idades dos filhos-----------------");
 var idadeDosFilhosSomados = pais.Select(p => p.Filhos.Select(f => f.Idade).Sum()).Sum();
 Console.WriteLine($"A idade total dos filhos é: {idadeDosFilhosSomados}");
-
 
 Console.WriteLine("---------------Exemplo ofilhos like sql-----------------");
 var idadeDosFilhosSomadosSQL = (
@@ -98,7 +93,6 @@ var idadeDosFilhosSomadosSQL = (
     select f.Idade
 ).Sum();
 Console.WriteLine($"A idade total dos filhos é: {idadeDosFilhosSomadosSQL}");
-
 
 Console.WriteLine("---------------Exemplo de soma de idades dos filhos agrupados por pai-----------------");
 var idadeDosFilhosSomadosAgrupadosPorPai =
@@ -112,7 +106,6 @@ foreach (var item in idadeDosFilhosSomadosAgrupadosPorPai)
 {
     Console.WriteLine($"Pai: {item.Nome} - Idade total dos filhos: {item.SomaIdadeFilhos}");
 }
-
 
 Console.WriteLine("---------------Exemplo de soma de idades dos filhos agrupados por pai like sql-----------------");
 var idadeDosFilhosSomadosAgrupadosPorPaiSQL = (
@@ -155,6 +148,12 @@ var paisDosFilhos = new List<dynamic>
 var consultaJoin = from pai in paisDosFilhos
                    join filho in filhosSeparados
                    on pai.Id equals filho.PaiId
+                   select new
+                   {
+                       PaiNome = pai.Nome,
+                       PaiIdade = pai.Idade,
+                       FilhoNome = filho.Nome,
+                       FilhoIdade = filho.Idade
                    };
 
 // Exibindo em formato de tabela (agora incluindo idade do pai)
