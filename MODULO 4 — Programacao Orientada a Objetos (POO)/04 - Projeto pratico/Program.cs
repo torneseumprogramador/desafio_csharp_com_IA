@@ -1,5 +1,5 @@
 using ProjetoPraticoClientes.Interfaces;
-using ProjetoPraticoClientes.Repositorios;
+using ProjetoPraticoClientes.Interfaces.Views;
 using ProjetoPraticoClientes.Servicos;
 
 namespace ProjetoPraticoClientes
@@ -8,7 +8,7 @@ namespace ProjetoPraticoClientes
     {
         private static void Main(string[] args)
         {
-            var repositorio = new ClienteRepositorio();
+            var repositorio = RepositorioSelecionacaoView.SelecionarRepositorio();
             var servico = new ClienteServico(repositorio);
             var interfaceConsole = new ClienteInterfaceConsole(servico);
 

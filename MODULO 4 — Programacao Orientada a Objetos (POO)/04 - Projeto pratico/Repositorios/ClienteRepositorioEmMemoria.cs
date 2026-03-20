@@ -5,7 +5,7 @@ using ProjetoPraticoClientes.Models;
 
 namespace ProjetoPraticoClientes.Repositorios
 {
-    public class ClienteRepositorio
+    public class ClienteRepositorioEmMemoria : IClienteRepositorio
     {
         private readonly List<Cliente> _clientes = new List<Cliente>();
         private int _proximoId = 1;

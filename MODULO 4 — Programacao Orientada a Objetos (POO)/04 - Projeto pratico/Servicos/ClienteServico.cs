@@ -36,9 +36,9 @@ namespace ProjetoPraticoClientes.Servicos
 
     public class ClienteServico
     {
-        private readonly ClienteRepositorio _repositorio;
+        private readonly IClienteRepositorio _repositorio;
 
-        public ClienteServico(ClienteRepositorio repositorio)
+        public ClienteServico(IClienteRepositorio repositorio)
         {
             _repositorio = repositorio;
         }
