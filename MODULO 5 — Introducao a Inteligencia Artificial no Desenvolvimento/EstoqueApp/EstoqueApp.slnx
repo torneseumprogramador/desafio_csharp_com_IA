@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="EstoqueApp.Application/EstoqueApp.Application.csproj" />
+  <Project Path="EstoqueApp.ConsoleUI/EstoqueApp.ConsoleUI.csproj" />
+  <Project Path="EstoqueApp.Domain/EstoqueApp.Domain.csproj" />
+</Solution>

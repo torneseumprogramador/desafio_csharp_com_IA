@@ -1,0 +1,10 @@
+[
+  {
+    "Id": 1,
+    "Nome": "teste",
+    "DataNascimento": "2000-11-09T00:00:00",
+    "Peso": 75,
+    "Altura": 1.86,
+    "Status": 0
+  }
+]

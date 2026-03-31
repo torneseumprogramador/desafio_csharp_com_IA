@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="AcademiaApp.Application/AcademiaApp.Application.csproj" />
+  <Project Path="AcademiaApp.ConsoleUI/AcademiaApp.ConsoleUI.csproj" />
+  <Project Path="AcademiaApp.Domain/AcademiaApp.Domain.csproj" />
+  <Project Path="AcademiaApp.Infrastructure/AcademiaApp.Infrastructure.csproj" />
+</Solution>
