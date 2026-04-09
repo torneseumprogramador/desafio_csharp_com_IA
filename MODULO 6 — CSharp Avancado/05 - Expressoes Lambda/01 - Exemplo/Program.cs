@@ -1,6 +1,14 @@
 ﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-
+// Definindo classe Usuario para corrigir erro CS0246
+public class Usuario
+{
+    public int Id { get; set; }
+    public string Nome { get; set; }
+}
 
 public class Program
 {
@@ -26,10 +34,10 @@ public class Program
 
         // Exemplo de função void com expressão lambda (Action)
         // Action utilizo somente quando o retorno é void
-        Action<string> ExibirMensagemLambda = (mensagem) => Console.WriteLine(mensagem);
+        Action<string> ExibirMensagemLambda1 = (mensagem) => Console.WriteLine(mensagem);
 
         // Exemplo de função void tradicional
-        void ExibirMensagem(string mensagem)
+        void ExibirMensagem1(string mensagem)
         {
             Console.WriteLine(mensagem);
         }
@@ -129,12 +137,55 @@ public class Program
             Console.WriteLine("Mensagem 2: " + mensagem);
         }
 
-        // quanto tenho mais de uma linha de código, uso chaves e return
+        // quando tenho mais de uma linha de código, uso chaves e return
         Action<string> ExibirMensagemLambda = mensagem =>
         {
             Console.WriteLine("Mensagem 1: " + mensagem);
             Console.WriteLine("Mensagem 2: " + mensagem);
         };
 
+
+        // ==== Exemplo de programação funcional utilizando lambda e função pura ====
+
+        // Função pura: não altera estado externo, retorna sempre o mesmo resultado para os mesmos parâmetros
+        int Dobrar(int n) => n * 2;
+
+        // Lista de números
+        var numeros2 = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
+
+        // Função de filtro usando lambda (programação funcional)
+        Func<int, bool> ehImpar = x => x % 2 != 0;
+
+        // Usando Where (filtro) + Select (projeção) + Aggregate (redução)
+        var imparesDobrados = numeros2
+            .Where(ehImpar)           // Filtra só ímpares
+            .Select(Dobrar)           // Dobra cada ímpar usando função pura
+            .ToList();
+
+        Console.WriteLine("Ímpares Dobrados: " + string.Join(", ", imparesDobrados)); // 2, 6, 10, 14
+
+        // Soma dos ímpares (com lambda inline)
+        int somaImpares = numeros2.Where(x => x % 2 != 0).Sum();
+        Console.WriteLine("Soma dos ímpares: " + somaImpares); // 16
+
+        // Usando Aggregate para calcular o produto de todos os números da lista
+        // O método Aggregate faz uma agregação/redução dos elementos da lista.
+        // No exemplo abaixo, começa com valor inicial 1 e multiplica cada elemento da lista pelo acumulador (acc),
+        // ou seja, calcula o produto de todos os números da lista.
+        // O x representa cada elemento da lista (numeros2)
+        // O acc representa o acumulador, que armazena o valor parcial da multiplicação a cada iteração
+        var numerosParaAgregar = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
+        int produto = numerosParaAgregar.Aggregate(1, (acc, x) => acc * x);
+        Console.WriteLine("Produto de todos os números: " + produto); // 5040
+
+        // Exemplo de composição de funções
+        Func<int, int> triplo = x => x * 3;
+        Func<int, int> maisCinco = x => x + 5;
+
+        // Compondo funções: triplo(maisCinco(x))
+        Func<int, int> triploMaisCinco = x => triplo(maisCinco(x));
+
+        var resultado = numeros2.Select(triploMaisCinco).ToList();
+        Console.WriteLine("Triplo depois de somar 5: " + string.Join(", ", resultado));
     }
 }
