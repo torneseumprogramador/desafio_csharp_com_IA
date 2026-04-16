@@ -83,3 +83,6 @@ TestResults/
 
 # Configs locais (podem conter logs ou segredos)
 appsettings.*.local.json
+
+# Variaveis de ambiente locais (dotenv)
+**/.env
