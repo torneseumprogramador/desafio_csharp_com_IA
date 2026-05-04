@@ -1,0 +1,33 @@
+@primeiraApi_HostAddress = http://localhost:5047
+
+### Home / Index — HTML
+GET {{primeiraApi_HostAddress}}/
+
+### Index — HTML (caminho alternativo)
+GET {{primeiraApi_HostAddress}}/index
+
+### Home/Index — HTML
+GET {{primeiraApi_HostAddress}}/Home/Index
+
+### Index — JSON
+GET {{primeiraApi_HostAddress}}/index.json
+
+### Home/Index — XML
+GET {{primeiraApi_HostAddress}}/Home/Index.xml
+
+### Previsão — JSON
+GET {{primeiraApi_HostAddress}}/weatherforecast.json
+
+### Previsão — XML
+GET {{primeiraApi_HostAddress}}/weatherforecast.xml
+
+### Clientes (JSON por padrão)
+GET {{primeiraApi_HostAddress}}/clientes
+
+### Clientes — XML
+GET {{primeiraApi_HostAddress}}/clientes.xml
+
+### Cliente por id — JSON
+GET {{primeiraApi_HostAddress}}/clientes/1.json
+
+###
