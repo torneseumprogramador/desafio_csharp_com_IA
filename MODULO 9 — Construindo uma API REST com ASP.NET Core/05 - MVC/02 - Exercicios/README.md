@@ -1,0 +1,1 @@
+### Sua missão neste exercicio é olhar o conteudo da aula e endenter o padrao criado, se tiver dúvidas mandar mensagem no discord da comunidade.
