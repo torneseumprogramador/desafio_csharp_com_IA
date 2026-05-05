@@ -1,0 +1,20 @@
+@model primeiraApi.Models.MensagemResposta
+@{
+    ViewData["Title"] = "Início";
+}
+<h1>@Model.Message</h1>
+<p>
+    Esta API foi organizada com separação de responsabilidades por escopo, incluindo
+    <strong>Clientes</strong>, <strong>Produtos</strong> e <strong>Pedidos</strong>.
+    O projeto usa DTOs, repositórios (memória e MySQL), mapeamentos e Entity Framework com migrations.
+</p>
+<p>
+    A API também suporta resposta em diferentes formatos para a rota inicial:
+</p>
+<ul>
+    <li><a href="/index.json">/index.json</a> ou <a href="/Home/Index.json">/Home/Index.json</a></li>
+    <li><a href="/index.xml">/index.xml</a> ou <a href="/Home/Index.xml">/Home/Index.xml</a></li>
+</ul>
+<p>
+    Documentação da API (Swagger): <a href="/swagger" target="_blank" rel="noopener noreferrer">/swagger</a>
+</p>

@@ -1,0 +1,1 @@
+### Estudar a estrutura da aplicação criada, fazendo os testes criando produtos, clientes e pedidos.
