@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EcommerceCleanArchitecture.Application/EcommerceCleanArchitecture.Application.csproj" />
+  <Project Path="EcommerceCleanArchitecture.Domain/EcommerceCleanArchitecture.Domain.csproj" />
+  <Project Path="EcommerceCleanArchitecture.Infrastructure/EcommerceCleanArchitecture.Infrastructure.csproj" />
+  <Project Path="EcommerceCleanArchitecture.WebApi/EcommerceCleanArchitecture.WebApi.csproj" />
+</Solution>
