@@ -25,6 +25,42 @@ Content-Type: application/json
   "senha": "123456"
 }
 
+### Administradores
+GET {{primeiraApi_HostAddress}}/administradores
+Authorization: Bearer {{token}}
+
+### Administrador por id
+GET {{primeiraApi_HostAddress}}/administradores/1
+Authorization: Bearer {{token}}
+
+### Criar administrador
+POST {{primeiraApi_HostAddress}}/administradores
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome": "Editor",
+  "email": "editor@ecommerce.com",
+  "rule": "editor",
+  "senha": "123456"
+}
+
+### Atualizar administrador
+PUT {{primeiraApi_HostAddress}}/administradores/2
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome": "Editor Atualizado",
+  "email": "editor@ecommerce.com",
+  "rule": "editor",
+  "senha": null
+}
+
+### Remover administrador
+DELETE {{primeiraApi_HostAddress}}/administradores/2
+Authorization: Bearer {{token}}
+
 ### Clientes (JSON por padrão)
 GET {{primeiraApi_HostAddress}}/clientes
 Authorization: Bearer {{token}}

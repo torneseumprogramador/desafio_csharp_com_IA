@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using primeiraApi.Configuration;
+using primeiraApi.Enums;
 
 namespace primeiraApi.Services.Auth;
 
@@ -16,12 +17,14 @@ public class TokenService : ITokenService
         _jwtOptions = jwtOptions.Value;
     }
 
-    public string GerarToken(string email, DateTime expiraEm)
+    public string GerarToken(string email, AdministradorRule rule, DateTime expiraEm)
     {
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, email),
             new(JwtRegisteredClaimNames.Email, email),
+            new(ClaimTypes.Role, rule.ToString()),
+            new("rule", rule.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 

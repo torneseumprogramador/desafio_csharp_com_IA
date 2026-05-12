@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using primeiraApi.Configuration;
 using primeiraApi.DTOs;
 using primeiraApi.ModelViews;
+using primeiraApi.Services;
 using primeiraApi.Services.Auth;
 
 namespace primeiraApi.Controllers;
@@ -13,39 +14,43 @@ namespace primeiraApi.Controllers;
 [AllowAnonymous]
 public class AuthController : ControllerBase
 {
-    private readonly AuthOptions _authOptions;
+    private readonly IAdministradorService _administradorService;
     private readonly JwtOptions _jwtOptions;
     private readonly ITokenService _tokenService;
 
     public AuthController(
-        IOptions<AuthOptions> authOptions,
+        IAdministradorService administradorService,
         IOptions<JwtOptions> jwtOptions,
         ITokenService tokenService)
     {
-        _authOptions = authOptions.Value;
+        _administradorService = administradorService;
         _jwtOptions = jwtOptions.Value;
         _tokenService = tokenService;
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequestDto request)
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto request, CancellationToken cancellationToken)
     {
-        if (!CredenciaisValidas(request))
+        var administrador = await _administradorService.AutenticarAsync(
+            request.Email,
+            request.Senha,
+            cancellationToken);
+
+        if (administrador is null)
         {
             return Unauthorized(new MensagemResposta { Message = "E-mail ou senha inválidos." });
         }
 
         var expiraEm = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationMinutes);
-        var token = _tokenService.GerarToken(request.Email, expiraEm);
+        var token = _tokenService.GerarToken(administrador.Email, administrador.Rule, expiraEm);
 
         return Ok(new LoginResponseDto
         {
             Token = token,
-            ExpiraEm = expiraEm
+            ExpiraEm = expiraEm,
+            Nome = administrador.Nome,
+            Email = administrador.Email,
+            Rule = administrador.Rule
         });
     }
-
-    private bool CredenciaisValidas(LoginRequestDto request) =>
-        string.Equals(request.Email, _authOptions.Email, StringComparison.OrdinalIgnoreCase)
-        && request.Senha == _authOptions.Senha;
 }

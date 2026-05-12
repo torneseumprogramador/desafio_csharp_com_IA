@@ -74,6 +74,17 @@ public class ClienteService : IClienteService
 
     public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
+        var cliente = await _repository.GetByIdAsync(id, cancellationToken);
+        if (cliente is null)
+        {
+            throw new ResourceNotFoundException("Cliente não encontrado");
+        }
+
+        if (await _repository.HasPedidosAsync(id, cancellationToken))
+        {
+            throw new ServiceValidationException("Não é possível excluir o cliente porque ele possui pedidos vinculados.");
+        }
+
         if (!await _repository.RemoveAsync(id, cancellationToken))
         {
             throw new ResourceNotFoundException("Cliente não encontrado");

@@ -15,6 +15,7 @@
   <ItemGroup>
     <Compile Include="Repositories\**\*.cs" />
     <Compile Include="Data\**\*.cs" />
+    <Compile Include="Enums\**\*.cs" />
     <Compile Include="Models\**\*.cs" />
     <Compile Include="ValueObjects\**\*.cs" />
     <Compile Include="Configuration\RepositoryOptions.cs" />

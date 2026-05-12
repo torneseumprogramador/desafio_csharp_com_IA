@@ -52,6 +52,13 @@ public class MySqlClienteRepository : IClienteRepository
         return true;
     }
 
+    public Task<bool> HasPedidosAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Pedidos
+            .AsNoTracking()
+            .AnyAsync(p => p.ClienteId == id, cancellationToken);
+    }
+
     public async Task<bool> RemoveAsync(int id, CancellationToken cancellationToken = default)
     {
         var cliente = await _dbContext.Clientes.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);

@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using primeiraApi.DTOs;
+using primeiraApi.Enums;
 using primeiraApi.ModelViews;
 using primeiraApi.Models;
 using primeiraApi.Services;
@@ -103,12 +104,17 @@ public class ClientesController : ControllerBase
 
     [HttpDelete("clientes/{id:int}")]
     [HttpDelete("clientes/{id:int}.{format:regex(json|xml)}")]
+    [Authorize(Roles = nameof(AdministradorRule.Administrador))]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         try
         {
             await _service.DeleteAsync(id, cancellationToken);
             return NoContent();
+        }
+        catch (ServiceValidationException ex)
+        {
+            return BadRequest(new MensagemResposta { Message = ex.Message });
         }
         catch (ResourceNotFoundException ex)
         {

@@ -67,6 +67,11 @@ public class MemoryProdutoRepository : IProdutoRepository
         }
     }
 
+    public Task<bool> HasPedidosAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(false);
+    }
+
     public Task<bool> RemoveAsync(int id, CancellationToken cancellationToken = default)
     {
         lock (_lock)

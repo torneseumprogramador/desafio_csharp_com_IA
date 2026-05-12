@@ -16,6 +16,10 @@ public class ApiMappingProfile : Profile
         CreateMap<Cliente, ClienteResponseDto>()
             .ForMember(dest => dest.Cpf, opt => opt.MapFrom(src => src.Cpf.ToString()));
 
+        CreateMap<AdministradorRequestDto, Administrador>();
+        CreateMap<AdministradorUpdateRequestDto, Administrador>();
+        CreateMap<Administrador, AdministradorResponseDto>();
+
         CreateMap<ProdutoRequestDto, Produto>();
         CreateMap<Produto, ProdutoResponseDto>();
 

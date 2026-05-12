@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using primeiraApi.Configuration;
 using primeiraApi.Middlewares;
+using primeiraApi.Services;
 using primeiraApi.Services.Auth;
 using System.Text;
 
@@ -28,8 +29,8 @@ public static class ApiSecurityConfig
     {
         services.Configure<JwtOptions>(
             configuration.GetSection(JwtOptions.SectionName));
-        services.Configure<AuthOptions>(
-            configuration.GetSection(AuthOptions.SectionName));
+        services.Configure<SaltJwtOptions>(
+            configuration.GetSection(SaltJwtOptions.SectionName));
 
         return services;
     }
@@ -37,6 +38,7 @@ public static class ApiSecurityConfig
     private static IServiceCollection AddJwtTokenService(this IServiceCollection services)
     {
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<ISaltProtector, JwtSaltProtector>();
 
         return services;
     }

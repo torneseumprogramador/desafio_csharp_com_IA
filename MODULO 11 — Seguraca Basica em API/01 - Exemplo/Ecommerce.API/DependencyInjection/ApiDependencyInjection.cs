@@ -56,12 +56,14 @@ public static class ApiDependencyInjection
 
         if (repositoryProvider.Equals("MySql", StringComparison.OrdinalIgnoreCase))
         {
+            services.AddScoped<IAdministradorRepository, MySqlAdministradorRepository>();
             services.AddScoped<IClienteRepository, MySqlClienteRepository>();
             services.AddScoped<IProdutoRepository, MySqlProdutoRepository>();
             services.AddScoped<IPedidoRepository, MySqlPedidoRepository>();
         }
         else
         {
+            services.AddSingleton<IAdministradorRepository, MemoryAdministradorRepository>();
             services.AddSingleton<IClienteRepository, MemoryClienteRepository>();
             services.AddSingleton<IProdutoRepository, MemoryProdutoRepository>();
             services.AddSingleton<IPedidoRepository, MemoryPedidoRepository>();
@@ -72,6 +74,7 @@ public static class ApiDependencyInjection
 
     private static IServiceCollection AddApiServices(this IServiceCollection services)
     {
+        services.AddScoped<IAdministradorService, AdministradorService>();
         services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<IProdutoService, ProdutoService>();
         services.AddScoped<IPedidoService, PedidoService>();

@@ -26,7 +26,7 @@ public static class JwtBearerEventsMiddleware
                 context.Response.StatusCode = StatusCodes.Status403Forbidden;
                 await context.Response.WriteAsJsonAsync(new MensagemResposta
                 {
-                    Message = "Acesso negado. Você não tem permissão para acessar este recurso."
+                    Message = "Acesso negado. Apenas administradores podem acessar este recurso."
                 });
             }
         };

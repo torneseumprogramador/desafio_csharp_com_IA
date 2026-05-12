@@ -51,6 +51,13 @@ public class MySqlProdutoRepository : IProdutoRepository
         return true;
     }
 
+    public Task<bool> HasPedidosAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return _dbContext.PedidoProdutos
+            .AsNoTracking()
+            .AnyAsync(pp => pp.ProdutoId == id, cancellationToken);
+    }
+
     public async Task<bool> RemoveAsync(int id, CancellationToken cancellationToken = default)
     {
         var existente = await _dbContext.Produtos.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);

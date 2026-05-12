@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Administradores\**\*.cs" />
     <Compile Include="Clientes\**\*.cs" />
     <Compile Include="Produtos\**\*.cs" />
     <Compile Include="Pedidos\**\*.cs" />

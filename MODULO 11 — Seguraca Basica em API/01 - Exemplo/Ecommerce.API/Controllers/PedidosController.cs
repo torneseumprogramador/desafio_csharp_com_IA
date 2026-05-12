@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using primeiraApi.DTOs;
+using primeiraApi.Enums;
 using primeiraApi.ModelViews;
 using primeiraApi.Models;
 using primeiraApi.Services;
@@ -103,6 +104,7 @@ public class PedidosController : ControllerBase
 
     [HttpDelete("pedidos/{id:int}")]
     [HttpDelete("pedidos/{id:int}.{format:regex(json|xml)}")]
+    [Authorize(Roles = nameof(AdministradorRule.Administrador))]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         try

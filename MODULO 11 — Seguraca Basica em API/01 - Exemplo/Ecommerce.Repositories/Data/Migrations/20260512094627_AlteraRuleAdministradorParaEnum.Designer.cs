@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using primeiraApi.Data;
 
@@ -11,9 +12,11 @@ using primeiraApi.Data;
 namespace primeiraApi.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260512094627_AlteraRuleAdministradorParaEnum")]
+    partial class AlteraRuleAdministradorParaEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,8 +54,8 @@ namespace primeiraApi.Data.Migrations
 
                     b.Property<string>("Salt")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
                         .HasColumnName("salt");
 
                     b.Property<string>("Senha")
@@ -75,17 +78,8 @@ namespace primeiraApi.Data.Migrations
                             Email = "admin@ecommerce.com",
                             Nome = "Administrador",
                             Rule = "administrador",
-                            Salt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFY29tbWVyY2UuQVBJIiwiYXVkIjoiRWNvbW1lcmNlLlNhbHQiLCJzYWx0IjoiWldOdmJXMWxjbU5sTFdGa2JXbHVJUT09In0.XhTBjWjQ4a0iU_m3lTQazJCi0KSDef_kM1wFhYD28pI",
-                            Senha = "arsKZFqL7zbZu5WW4HT5In6wqWh23P401ucxeFcDnPM="
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "editor@ecommerce.com",
-                            Nome = "Editor",
-                            Rule = "editor",
-                            Salt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFY29tbWVyY2UuQVBJIiwiYXVkIjoiRWNvbW1lcmNlLlNhbHQiLCJzYWx0IjoiWldOdmJXMWxjbU5sTFdWa2FYUnZjZz09In0.AyDxp6PGB4SQvRNCxINl9aHmDNcgVq-872nXC2e3bO4",
-                            Senha = "YIqRvjW3RdX4B5emFtgvGuyJ7lRBEghAkWOYEQMWjAo="
+                            Salt = "$2a$11$sIaHnW6hmUL037L5rBszMO",
+                            Senha = "$2a$11$sIaHnW6hmUL037L5rBszMOMjDut41nVZGY0.n/aRRGYdFNsFQCvT6"
                         });
                 });
 

@@ -55,6 +55,17 @@ public class ProdutoService : IProdutoService
 
     public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
+        var produto = await _repository.GetByIdAsync(id, cancellationToken);
+        if (produto is null)
+        {
+            throw new ResourceNotFoundException("Produto não encontrado");
+        }
+
+        if (await _repository.HasPedidosAsync(id, cancellationToken))
+        {
+            throw new ServiceValidationException("Não é possível excluir o produto porque ele possui pedidos vinculados.");
+        }
+
         if (!await _repository.RemoveAsync(id, cancellationToken))
         {
             throw new ResourceNotFoundException("Produto não encontrado");
