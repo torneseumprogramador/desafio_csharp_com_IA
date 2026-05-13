@@ -17,10 +17,11 @@ public class TokenService : ITokenService
         _jwtOptions = jwtOptions.Value;
     }
 
-    public string GerarToken(string email, AdministradorRule rule, DateTime expiraEm)
+    public string GerarToken(string nome, string email, AdministradorRule rule, DateTime expiraEm)
     {
         var claims = new List<Claim>
         {
+            new(JwtRegisteredClaimNames.Name, nome),
             new(JwtRegisteredClaimNames.Sub, email),
             new(JwtRegisteredClaimNames.Email, email),
             new(ClaimTypes.Role, rule.ToString()),

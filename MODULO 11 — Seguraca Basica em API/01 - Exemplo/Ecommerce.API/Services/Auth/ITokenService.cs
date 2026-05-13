@@ -4,5 +4,5 @@ namespace primeiraApi.Services.Auth;
 
 public interface ITokenService
 {
-    string GerarToken(string email, AdministradorRule rule, DateTime expiraEm);
+    string GerarToken(string nome, string email, AdministradorRule rule, DateTime expiraEm);
 }

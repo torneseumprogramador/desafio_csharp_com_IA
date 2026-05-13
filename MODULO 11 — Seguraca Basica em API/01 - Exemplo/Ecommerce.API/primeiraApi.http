@@ -25,6 +25,14 @@ Content-Type: application/json
   "senha": "123456"
 }
 
+### Refresh token
+POST {{primeiraApi_HostAddress}}/auth/refresh
+Authorization: Bearer {{token}}
+
+### Verificar se está logado
+HEAD {{primeiraApi_HostAddress}}/auth/status
+Authorization: Bearer {{token}}
+
 ### Administradores
 GET {{primeiraApi_HostAddress}}/administradores
 Authorization: Bearer {{token}}

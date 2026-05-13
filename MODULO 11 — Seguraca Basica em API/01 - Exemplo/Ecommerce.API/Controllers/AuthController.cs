@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using primeiraApi.Configuration;
 using primeiraApi.DTOs;
 using primeiraApi.ModelViews;
 using primeiraApi.Services;
@@ -11,24 +9,21 @@ namespace primeiraApi.Controllers;
 
 [ApiController]
 [Route("auth")]
-[AllowAnonymous]
 public class AuthController : ControllerBase
 {
     private readonly IAdministradorService _administradorService;
-    private readonly JwtOptions _jwtOptions;
-    private readonly ITokenService _tokenService;
+    private readonly IAuthService _authService;
 
     public AuthController(
         IAdministradorService administradorService,
-        IOptions<JwtOptions> jwtOptions,
-        ITokenService tokenService)
+        IAuthService authService)
     {
         _administradorService = administradorService;
-        _jwtOptions = jwtOptions.Value;
-        _tokenService = tokenService;
+        _authService = authService;
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto request, CancellationToken cancellationToken)
     {
         var administrador = await _administradorService.AutenticarAsync(
@@ -41,16 +36,30 @@ public class AuthController : ControllerBase
             return Unauthorized(new MensagemResposta { Message = "E-mail ou senha inválidos." });
         }
 
-        var expiraEm = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationMinutes);
-        var token = _tokenService.GerarToken(administrador.Email, administrador.Rule, expiraEm);
+        var response = _authService.GerarRespostaAutenticacao(administrador.Nome, administrador.Email, administrador.Rule);
 
-        return Ok(new LoginResponseDto
+        return Ok(response);
+    }
+
+    [HttpPost("refresh")]
+    [Authorize]
+    public IActionResult Refresh()
+    {
+        var authorizationHeader = Request.Headers.Authorization.ToString();
+        if (!_authService.ObterDadosDoToken(authorizationHeader, out var nome, out var email, out var rule))
         {
-            Token = token,
-            ExpiraEm = expiraEm,
-            Nome = administrador.Nome,
-            Email = administrador.Email,
-            Rule = administrador.Rule
-        });
+            return Unauthorized(new MensagemResposta { Message = "Token inválido." });
+        }
+
+        var response = _authService.GerarRespostaAutenticacao(nome, email, rule);
+
+        return Ok(response);
+    }
+
+    [HttpHead("status")]
+    [Authorize]
+    public IActionResult Status()
+    {
+        return Ok();
     }
 }

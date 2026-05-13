@@ -37,6 +37,7 @@ public static class ApiSecurityConfig
 
     private static IServiceCollection AddJwtTokenService(this IServiceCollection services)
     {
+        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ISaltProtector, JwtSaltProtector>();
 
