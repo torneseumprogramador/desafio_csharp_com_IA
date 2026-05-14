@@ -1,0 +1,11 @@
+<p class="@TextClass">@ChildContent</p>
+
+@code {
+    [Parameter] public bool IsError { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string TextClass => IsError
+        ? "text-sm text-red-400"
+        : "text-sm text-slate-400";
+}
