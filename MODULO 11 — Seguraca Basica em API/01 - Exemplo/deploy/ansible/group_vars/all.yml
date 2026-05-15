@@ -1,0 +1,6 @@
+---
+app_root: /opt/ecommerce
+compose_dir: "{{ app_root }}/deploy"
+# Raiz do repositório "01 - Exemplo" (dois níveis acima de deploy/ansible)
+project_root: "{{ playbook_dir }}/../.."
+deploy_env_file: "{{ compose_dir }}/.env"

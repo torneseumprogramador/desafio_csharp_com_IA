@@ -1,0 +1,11 @@
+project_name   = "ecommerce"
+environment    = "dev"
+location       = "brazilsouth"
+vm_size        = "Standard_B2s"
+admin_username = "azureuser"
+
+# Cole o conteúdo de ~/.ssh/id_rsa.pub (uma linha)
+ssh_public_key = "ssh-rsa AAAA... seu-email@exemplo.com"
+
+# Em produção use o seu IP: "203.0.113.10/32"
+allowed_ssh_cidr = "*"

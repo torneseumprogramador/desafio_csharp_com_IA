@@ -1,0 +1,38 @@
+---
+- name: Verificar se o Docker já está instalado
+  ansible.builtin.command: docker --version
+  register: docker_version_check
+  changed_when: false
+  failed_when: false
+
+- name: Instalar Docker (script oficial)
+  ansible.builtin.shell: curl -fsSL https://get.docker.com | sh
+  args:
+    creates: /usr/bin/docker
+  when: docker_version_check.rc != 0
+
+- name: Garantir serviço Docker ativo
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Adicionar utilizador SSH ao grupo docker
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+
+- name: Verificar instalação do Docker Compose plugin
+  ansible.builtin.command: docker compose version
+  register: compose_version
+  changed_when: false
+
+- name: Mostrar versões instaladas
+  ansible.builtin.debug:
+    msg:
+      - "{{ docker_version_check.stdout | default('Docker instalado nesta execução') }}"
+      - "{{ compose_version.stdout }}"
+
+- name: Reabrir sessão SSH (aplicar grupo docker ao utilizador)
+  ansible.builtin.meta: reset_connection

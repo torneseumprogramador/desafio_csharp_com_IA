@@ -1,0 +1,9 @@
+#cloud-config
+# Configuração mínima na primeira boot. Docker e deploy ficam no Ansible.
+package_update: true
+
+runcmd:
+  - mkdir -p /opt/ecommerce
+  - chown -R ${admin_user}:${admin_user} /opt/ecommerce
+
+final_message: "VM pronta para Ansible (deploy/ansible)."

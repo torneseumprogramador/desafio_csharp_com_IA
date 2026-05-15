@@ -1,0 +1,73 @@
+# Stack: MySQL + API + Web (BFF/Blazor)
+#
+# Local ou VM — a partir da pasta deploy:
+#   cp .env.example .env
+#   docker compose up --build
+#
+# Web (admin):  http://localhost:5260/admin
+# API/Swagger:  http://localhost:5047/swagger
+# MySQL:        localhost:3306  (user ecommerce / password ecommerce)
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ecommerce-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-primeira_api_mvc_dev}
+      MYSQL_USER: ${MYSQL_USER:-ecommerce}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ecommerce}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - ecommerce_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+
+  api:
+    build:
+      context: ..
+      dockerfile: Ecommerce.API/Dockerfile
+    container_name: ecommerce-api
+    restart: unless-stopped
+    ports:
+      - "${API_PORT:-5047}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:8080
+      Database__ApplyMigrations: "true"
+      ConnectionStrings__DefaultConnection: "server=mysql;port=3306;database=primeira_api_mvc_dev;user=ecommerce;password=ecommerce;CharSet=utf8mb4;"
+      Repository__Provider: MySql
+      Jwt__Issuer: ${JWT_ISSUER:-Ecommerce.API}
+      Jwt__Audience: ${JWT_AUDIENCE:-Ecommerce.Client}
+      Jwt__SecretKey: ${JWT_SECRET_KEY:-chave-super-secreta-para-jwt-com-pelo-menos-32-caracteres}
+      Jwt__ExpirationMinutes: ${JWT_EXPIRATION_MINUTES:-60}
+      SaltJwt__Issuer: ${SALT_JWT_ISSUER:-Ecommerce.API}
+      SaltJwt__Audience: ${SALT_JWT_AUDIENCE:-Ecommerce.Salt}
+      SaltJwt__SecretKey: ${SALT_JWT_SECRET_KEY:-chave-super-secreta-para-salt-jwt-com-pelo-menos-32-caracteres}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ../Ecommerce.Web
+      dockerfile: Ecommerce.Web/Dockerfile
+    container_name: ecommerce-web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-5260}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:8080
+      ApiBackend__BaseUrl: http://api:8080/
+    depends_on:
+      - api
+
+volumes:
+  ecommerce_mysql_data:

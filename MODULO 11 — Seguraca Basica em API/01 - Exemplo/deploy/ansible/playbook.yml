@@ -1,0 +1,28 @@
+---
+# Configuração do servidor e deploy da stack Ecommerce.
+# Cada play é uma etapa visível no terminal.
+#
+#   ansible-playbook -i inventory/hosts.azure.yml playbook.yml
+#   ansible-playbook -i inventory/hosts.azure.yml playbook.yml --tags docker
+#   ansible-playbook -i inventory/hosts.azure.yml playbook.yml --list-tasks
+
+- name: "Etapa 1 — Pacotes base e diretório de deploy"
+  hosts: ecommerce
+  gather_facts: true
+  become: true
+  tags: [etapa1, common]
+  roles:
+    - role: common
+
+- name: "Etapa 2 — Instalação do Docker"
+  hosts: ecommerce
+  become: true
+  tags: [etapa2, docker]
+  roles:
+    - role: docker
+
+- name: "Etapa 3 — Publicação da aplicação (código + Docker Compose)"
+  hosts: ecommerce
+  tags: [etapa3, app, ecommerce]
+  roles:
+    - role: ecommerce

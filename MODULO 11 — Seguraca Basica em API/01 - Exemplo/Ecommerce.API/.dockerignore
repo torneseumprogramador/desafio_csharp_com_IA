@@ -1,0 +1,10 @@
+**/.git
+**/.vs
+**/.vscode
+**/.idea
+**/bin
+**/obj
+**/*.user
+**/*.suo
+**/node_modules
+**/Ecommerce.Web

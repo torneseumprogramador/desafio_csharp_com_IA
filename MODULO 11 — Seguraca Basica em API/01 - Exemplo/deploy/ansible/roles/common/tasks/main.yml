@@ -1,0 +1,30 @@
+---
+- name: Atualizar cache de pacotes (apt)
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+
+- name: Instalar pacotes utilitários
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+      - git
+      - gnupg
+      - rsync
+      - python3
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Criar diretório da aplicação
+  ansible.builtin.file:
+    path: "{{ app_root }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+
+- name: Exibir diretório de deploy
+  ansible.builtin.debug:
+    msg: "Diretório de deploy: {{ app_root }}"

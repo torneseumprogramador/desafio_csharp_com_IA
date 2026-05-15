@@ -1,0 +1,11 @@
+project_name   = "ecommerce"
+environment    = "dev"
+aws_region     = "sa-east-1"
+instance_type  = "t3.small"
+admin_username = "ubuntu"
+
+# Cole o conteúdo de ~/.ssh/id_rsa.pub (uma linha)
+ssh_public_key = "ssh-rsa AAAA... seu-email@exemplo.com"
+
+# Em produção use o seu IP: "203.0.113.10/32"
+allowed_ssh_cidr = "0.0.0.0/0"

@@ -18,6 +18,8 @@
   <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <!-- Evita NETSDK1152 no publish do host (Ecommerce.Web já tem appsettings.json). -->
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 

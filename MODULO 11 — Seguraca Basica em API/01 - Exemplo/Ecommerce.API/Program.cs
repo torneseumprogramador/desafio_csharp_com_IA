@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using primeiraApi.Data;
 using primeiraApi.DependencyInjection;
 using primeiraApi.Security;
 
@@ -8,14 +10,23 @@ builder.Services.AddApiSecurity(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (builder.Configuration.GetValue<bool>("Database:ApplyMigrations"))
 {
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    using var scope = app.Services.CreateScope();
+    scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.Migrate();
 }
 
-app.UseHttpsRedirection();
+// if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
+// {
+app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
+// }
+
+if (!app.Environment.IsEnvironment("Docker"))
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseRouting();
 

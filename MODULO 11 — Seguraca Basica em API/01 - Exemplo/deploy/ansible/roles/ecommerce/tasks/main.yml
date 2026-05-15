@@ -1,0 +1,58 @@
+---
+- name: Sincronizar código do projeto para o servidor
+  ansible.posix.synchronize:
+    src: "{{ project_root }}/"
+    dest: "{{ app_root }}/"
+    delete: true
+    rsync_opts:
+      - "--exclude=.git"
+      - "--exclude=**/bin"
+      - "--exclude=**/obj"
+      - "--exclude=**/node_modules"
+      - "--exclude=**/.terraform"
+      - "--exclude=deploy/ansible/inventory/hosts.azure.yml"
+      - "--exclude=deploy/ansible/inventory/hosts.aws.yml"
+  delegate_to: localhost
+
+- name: Garantir ficheiro .env do compose (a partir do exemplo)
+  ansible.builtin.stat:
+    path: "{{ deploy_env_file }}"
+  register: deploy_env_stat
+
+- name: Copiar .env.example para .env se não existir
+  ansible.builtin.copy:
+    src: "{{ compose_dir }}/.env.example"
+    dest: "{{ deploy_env_file }}"
+    remote_src: true
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0600"
+  when: not deploy_env_stat.stat.exists
+
+- name: "Etapa 3.1 — Build e subida dos containers (mysql, api, web)"
+  ansible.builtin.command:
+    cmd: docker compose up -d --build
+    chdir: "{{ compose_dir }}"
+  register: compose_up
+  async: 1800
+  poll: 30
+  changed_when: compose_up.rc == 0
+  failed_when: compose_up.rc != 0
+
+- name: Mostrar fim do docker compose (últimas linhas)
+  ansible.builtin.debug:
+    msg: "{{ compose_up.stdout_lines[-20:] | default([]) }}"
+  when: compose_up.stdout_lines is defined
+
+- name: Aguardar API responder (porta 8080 no container)
+  ansible.builtin.wait_for:
+    host: 127.0.0.1
+    port: 5047
+    delay: 5
+    timeout: 300
+
+- name: URLs de acesso
+  ansible.builtin.debug:
+    msg:
+      - "Web (admin): http://{{ ansible_host }}:5260/admin"
+      - "API (Swagger): http://{{ ansible_host }}:5047/swagger"
