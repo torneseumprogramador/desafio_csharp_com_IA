@@ -1,0 +1,14 @@
+@if (Level == 1)
+{
+    <h1 class="mb-2 text-2xl font-semibold tracking-tight text-slate-100">@ChildContent</h1>
+}
+else
+{
+    <h2 class="mb-2 text-xl font-semibold tracking-tight text-slate-100">@ChildContent</h2>
+}
+
+@code {
+    [Parameter] public int Level { get; set; } = 1;
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

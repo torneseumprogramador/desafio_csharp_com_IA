@@ -1,0 +1,51 @@
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject AdminAuthState AuthState
+@inject NavigationManager Navigation
+
+<div class="flex min-h-screen flex-col bg-slate-950 text-slate-100">
+    <header class="flex items-center justify-between border-b border-slate-700 bg-slate-900 px-5 py-3">
+        <span class="font-bold tracking-wide text-slate-100">Ecommerce — Admin</span>
+        <div class="flex items-center gap-3 text-sm text-slate-200">
+            <span class="max-w-[14rem] truncate font-medium text-slate-100" title="@AuthState.DisplayName">@AuthState.DisplayName</span>
+            <AtomButton Type="button"
+                        Variant="ghost"
+                        OnClick="OnLogoutClick">
+                Sair
+            </AtomButton>
+        </div>
+    </header>
+    <div class="flex min-h-0 flex-1">
+        <nav class="w-52 shrink-0 border-r border-slate-700 bg-slate-900 p-4">
+            <NavLink href="/admin/administradores"
+                     Match="NavLinkMatch.Prefix"
+                     class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition-colors hover:bg-slate-800 hover:text-white"
+                     ActiveClass="bg-slate-700 text-white">
+                Administradores
+            </NavLink>
+        </nav>
+        <main class="min-w-0 flex-1 overflow-auto p-6">
+            @Body
+        </main>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        AuthState.Changed += OnAuthChanged;
+    }
+
+    private void OnAuthChanged() => _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        AuthState.Changed -= OnAuthChanged;
+    }
+
+    private async Task OnLogoutClick(MouseEventArgs _)
+    {
+        await AuthState.ClearAsync();
+        Navigation.NavigateTo("/admin", forceLoad: true, replace: true);
+    }
+}

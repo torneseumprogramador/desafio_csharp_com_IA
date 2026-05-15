@@ -1,0 +1,115 @@
+@primeiraApi_HostAddress = http://localhost:5047
+@token = cole_o_token_aqui
+
+### Home / Index — HTML
+GET {{primeiraApi_HostAddress}}/
+
+### Index — HTML (caminho alternativo)
+GET {{primeiraApi_HostAddress}}/index
+
+### Home/Index — HTML
+GET {{primeiraApi_HostAddress}}/Home/Index
+
+### Index — JSON
+GET {{primeiraApi_HostAddress}}/index.json
+
+### Home/Index — XML
+GET {{primeiraApi_HostAddress}}/Home/Index.xml
+
+### Login
+POST {{primeiraApi_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ecommerce.com",
+  "senha": "123456"
+}
+
+### Refresh token
+POST {{primeiraApi_HostAddress}}/auth/refresh
+Authorization: Bearer {{token}}
+
+### Verificar se está logado
+HEAD {{primeiraApi_HostAddress}}/auth/status
+Authorization: Bearer {{token}}
+
+### Administradores
+GET {{primeiraApi_HostAddress}}/administradores
+Authorization: Bearer {{token}}
+
+### Administrador por id
+GET {{primeiraApi_HostAddress}}/administradores/1
+Authorization: Bearer {{token}}
+
+### Criar administrador
+POST {{primeiraApi_HostAddress}}/administradores
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome": "Editor",
+  "email": "editor@ecommerce.com",
+  "rule": "editor",
+  "senha": "123456"
+}
+
+### Atualizar administrador
+PUT {{primeiraApi_HostAddress}}/administradores/2
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome": "Editor Atualizado",
+  "email": "editor@ecommerce.com",
+  "rule": "editor",
+  "senha": null
+}
+
+### Remover administrador
+DELETE {{primeiraApi_HostAddress}}/administradores/2
+Authorization: Bearer {{token}}
+
+### Clientes (JSON por padrão)
+GET {{primeiraApi_HostAddress}}/clientes
+Authorization: Bearer {{token}}
+
+### Clientes — XML
+GET {{primeiraApi_HostAddress}}/clientes.xml
+Authorization: Bearer {{token}}
+
+### Cliente por id — JSON
+GET {{primeiraApi_HostAddress}}/clientes/1.json
+Authorization: Bearer {{token}}
+
+### Produtos
+GET {{primeiraApi_HostAddress}}/produtos
+Authorization: Bearer {{token}}
+
+### Criar produto
+POST {{primeiraApi_HostAddress}}/produtos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome": "Monitor",
+  "preco": 899.90,
+  "estoque": 10
+}
+
+### Pedidos
+GET {{primeiraApi_HostAddress}}/pedidos
+Authorization: Bearer {{token}}
+
+### Criar pedido
+POST {{primeiraApi_HostAddress}}/pedidos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "observacao": "Entrega normal",
+  "itens": [
+    { "produtoId": 1, "quantidade": 2 }
+  ]
+}
+
+###

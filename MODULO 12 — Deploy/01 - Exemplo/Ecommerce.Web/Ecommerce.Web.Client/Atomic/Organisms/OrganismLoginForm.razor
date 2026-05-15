@@ -1,0 +1,96 @@
+@inject AuthApiService AuthApi
+@inject AdminAuthState AuthState
+@inject NavigationManager Navigation
+
+<div class="w-full max-w-md space-y-4">
+    <AtomHeading Level="1">Entrar</AtomHeading>
+    <AtomText>Informe o e-mail e a senha do administrador.</AtomText>
+
+    <form class="space-y-1" @onsubmit="OnSubmitAsync" @onsubmit:preventDefault>
+        <MoleculeFormField Label="E-mail" For="admin-email" Error="@_emailError">
+            <AtomTextInput Id="admin-email"
+                           Type="email"
+                           Placeholder="nome@empresa.com"
+                           @bind-Value="_email" />
+        </MoleculeFormField>
+
+        <MoleculeFormField Label="Senha" For="admin-senha" Error="@_senhaError">
+            <AtomTextInput Id="admin-senha"
+                           Type="password"
+                           Placeholder="••••••••"
+                           @bind-Value="_senha" />
+        </MoleculeFormField>
+
+        @if (!string.IsNullOrWhiteSpace(_erroGeral))
+        {
+            <div class="pt-1">
+                <AtomText IsError="true">@_erroGeral</AtomText>
+            </div>
+        }
+
+        <div class="pt-2">
+            <AtomButton Type="submit" Disabled="_enviando">
+                @if (_enviando)
+                {
+                    <span>Entrando…</span>
+                }
+                else
+                {
+                    <span>Entrar</span>
+                }
+            </AtomButton>
+        </div>
+    </form>
+</div>
+
+@code {
+    private string _email = string.Empty;
+    private string _senha = string.Empty;
+    private string? _emailError;
+    private string? _senhaError;
+    private string? _erroGeral;
+    private bool _enviando;
+
+    private async Task OnSubmitAsync()
+    {
+        _emailError = null;
+        _senhaError = null;
+        _erroGeral = null;
+
+        if (string.IsNullOrWhiteSpace(_email))
+        {
+            _emailError = "Informe o e-mail.";
+        }
+
+        if (string.IsNullOrWhiteSpace(_senha))
+        {
+            _senhaError = "Informe a senha.";
+        }
+
+        if (_emailError is not null || _senhaError is not null)
+        {
+            return;
+        }
+
+        _enviando = true;
+        try
+        {
+            var (sucesso, erro) = await AuthApi.LoginAsync(
+                new LoginRequest { Email = _email.Trim(), Senha = _senha },
+                CancellationToken.None);
+
+            if (sucesso is null)
+            {
+                _erroGeral = erro ?? "Falha no login.";
+                return;
+            }
+
+            AuthState.SetFromLogin(sucesso);
+            Navigation.NavigateTo("/admin/administradores");
+        }
+        finally
+        {
+            _enviando = false;
+        }
+    }
+}

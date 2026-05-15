@@ -1,0 +1,21 @@
+<input id="@Id"
+       class="w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2.5 text-slate-100 placeholder:text-slate-500 outline-none ring-blue-500 focus:ring-2"
+       type="@Type"
+       placeholder="@Placeholder"
+       value="@Value"
+       @oninput="OnInput" />
+
+@code {
+    [Parameter] public string? Id { get; set; }
+
+    [Parameter] public string Type { get; set; } = "text";
+
+    [Parameter] public string? Placeholder { get; set; }
+
+    [Parameter] public string Value { get; set; } = string.Empty;
+
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    private Task OnInput(ChangeEventArgs e) =>
+        ValueChanged.InvokeAsync(e.Value?.ToString() ?? string.Empty);
+}

@@ -1,0 +1,42 @@
+@page "/admin/administradores"
+@layout TemplateAdminShell
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+
+@inject AdminAuthState AuthState
+@inject NavigationManager Navigation
+@inject AdministradoresApiService AdministradoresApi
+
+<PageTitle>Admin — Administradores</PageTitle>
+
+<AtomHeading Level="2">Administradores</AtomHeading>
+<AtomText>Lista carregada da API protegida.</AtomText>
+<div style="height:1rem"></div>
+
+@if (!string.IsNullOrWhiteSpace(_erro))
+{
+    <AtomText IsError="true">@_erro</AtomText>
+    <div style="height:1rem"></div>
+}
+
+<OrganismAdministradoresTable Carregando="_carregando" Itens="_lista" />
+
+@code {
+    private IReadOnlyList<AdministradorResponse>? _lista;
+    private string? _erro;
+    private bool _carregando = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthState.RestoreFromStorageAsync();
+        if (!AuthState.IsAuthenticated)
+        {
+            Navigation.NavigateTo("/admin", replace: true);
+            return;
+        }
+
+        var (lista, erro) = await AdministradoresApi.GetAllAsync();
+        _lista = lista;
+        _erro = erro;
+        _carregando = false;
+    }
+}
